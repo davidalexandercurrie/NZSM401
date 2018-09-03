@@ -1,13 +1,16 @@
 var express = require('express');
 var socket = require('socket.io');
 
+
 var app = express();
-
-var io = socket(server);
-
-app.listen(process.env.PORT, process.env.IP, function(){
+var server = app.listen(process.env.PORT || 3000, process.env.IP, function(){
   console.log("My socket server is running");
 })
+var io = socket(server);
+
+
+
+app.use(express.static('public'));
 
 io.sockets.on('connection', newConnection);
 
