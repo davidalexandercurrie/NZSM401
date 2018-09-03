@@ -1,6 +1,8 @@
 var video;
 var socket;
 var vScale = 16;
+var ip = process.env.IP || 'http://localhost',
+    port = process.env.PORT || 3000;
 
 function setup() {
   createCanvas(640, 480);
@@ -10,7 +12,7 @@ function setup() {
   video.size(width/vScale, height/vScale);
   video.hide();
 
-  socket = io.connect('http://localhost:3000');
+  socket = io.connect('');
 }
 
 function draw() {
