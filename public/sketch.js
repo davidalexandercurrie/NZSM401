@@ -12,7 +12,7 @@ function setup() {
   video.size(width/vScale, height/vScale);
   video.hide();
 
-  socket = io.connect('ip, port');
+  socket = io.connect('socket.io');
 }
 
 function draw() {
