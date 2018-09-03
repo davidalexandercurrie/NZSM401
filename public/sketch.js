@@ -10,7 +10,7 @@ function setup() {
   video.size(width/vScale, height/vScale);
   //video.hide();
 
-  socket = io.connect(window.location.hostname);
+  //socket = io.connect(window.location.hostname);
 }
 
 function draw() {
