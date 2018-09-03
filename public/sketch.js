@@ -9,7 +9,8 @@ function setup() {
 
   video.size(width/vScale, height/vScale);
   video.hide();
-  socket = io.connect('process.env.PORT || 3000, process.env.IP');
+
+  socket = io.connect('http://localhost:3000');
 }
 
 function draw() {
