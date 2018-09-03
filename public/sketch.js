@@ -9,7 +9,7 @@ function setup() {
 
   video.size(width/vScale, height/vScale);
   video.hide();
-  //socket = io.connect('192.168.1.7:3000');
+  socket = io.connect('localhost:3000');
 }
 
 function draw() {

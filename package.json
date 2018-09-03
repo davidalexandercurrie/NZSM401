@@ -1,5 +1,5 @@
 {
-  "name": "videoinput",
+  "name": "nzsm401",
   "version": "1.0.0",
   "description": "videoSocket",
   "main": "server.js",
@@ -12,5 +12,9 @@
   "dependencies": {
     "express": "^4.16.3",
     "socket.io": "^2.1.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidalexandercurrie/nzsm401.git"
+},
 }
