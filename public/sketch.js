@@ -8,9 +8,9 @@ function setup() {
   video = createCapture(VIDEO);
 
   video.size(width/vScale, height/vScale);
-  //video.hide();
+  video.hide();
 
-  //socket = io.connect(window.location.hostname);
+  socket = io.connect(window.location.hostname);
 }
 
 function draw() {
