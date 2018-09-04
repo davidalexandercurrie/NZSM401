@@ -40,7 +40,7 @@ function draw() {
   avgBright = avgBright/counter;
   difference = oldBright - avgBright;
 
-  if(Math.abs(difference) > 1){
+  if(Math.abs(difference) > 0.1){
     console.log(avgBright);
   }
 
