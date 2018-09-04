@@ -3,6 +3,8 @@ var socket;
 var vScale = 16;
 var avgBright;
 var counter;
+var oldBright;
+var difference;
 
 
 function setup() {
@@ -18,6 +20,7 @@ function setup() {
 function draw() {
   background(51);
   video.loadPixels();
+  oldBright = avgBright;
   avgBright = 0;
   counter = 0;
   for(var y = 0; y < video.height; y++){
@@ -35,5 +38,10 @@ function draw() {
     }
   }
   avgBright = avgBright/counter;
-  console.log(avgBright);
+  difference = oldBright - avgBright;
+
+  if(Math.abs(difference) > 1){
+    console.log(avgBright);
+  }
+
 }
