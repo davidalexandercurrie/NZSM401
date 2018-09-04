@@ -1,6 +1,8 @@
 var video;
 var socket;
 var vScale = 16;
+var avgBright;
+var counter;
 
 
 function setup() {
@@ -9,14 +11,15 @@ function setup() {
   video = createCapture(VIDEO);
   video.size(width/vScale, height/vScale);
 
-  //video.hide();
+  video.hide();
   socket = io.connect(window.location.hostname);
 }
 
 function draw() {
   background(51);
   video.loadPixels();
-
+  avgBright = 0;
+  counter = 0;
   for(var y = 0; y < video.height; y++){
     for(var x = 0; x < video.width; x++){
       var index = (x + y * video.width)*4;
@@ -25,9 +28,12 @@ function draw() {
       var b = video.pixels[index+2];
 
       var bright = (r+g+b)/3;
+      avgBright = avgBright + bright;
       fill(bright);
       rect(width-(x+1)*vScale, y*vScale, vScale, vScale);
-
+      counter++;
     }
   }
+  avgBright = avgBright/counter;
+  console.log(avgBright);
 }
