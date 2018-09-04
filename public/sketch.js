@@ -1,15 +1,16 @@
 var video;
 var socket;
 var vScale = 16;
-socket = io.connect('http://' + document.domain + ':'+ location.port);
+
 
 function setup() {
   createCanvas(640, 480);
   pixelDensity(1);
   video = createCapture(VIDEO);
   video.size(width/vScale, height/vScale);
-  video.loadPixels();
+
   //video.hide();
+  socket = io.connect(window.location.hostname);
 }
 
 function draw() {
