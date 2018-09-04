@@ -18,6 +18,7 @@ function newConnection(socket) {
   socket.on('bright', cameraMsg);
 
 }
-function cameraMsg(data){
+function cameraMsg(data, socket){
   console.log(data);
+  console.log(socket.id);
 }
