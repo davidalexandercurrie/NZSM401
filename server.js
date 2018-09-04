@@ -16,8 +16,9 @@ io.sockets.on('connection', newConnection);
 function newConnection(socket) {
   console.log('new connection: ' + socket.id);
   socket.on('bright', cameraMsg);
-  socketID = socket.id;
+
 }
-function cameraMsg(data, socketID){
-  console.log(data, socketID);
+function cameraMsg(data, socket){
+  console.log(data);
+  console.log(socket.id);
 }
