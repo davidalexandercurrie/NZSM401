@@ -41,7 +41,15 @@ function draw() {
   difference = oldBright - avgBright;
 
   if(Math.abs(difference) > 0.1){
-    console.log(avgBright);
+    sendAvgBright();
   }
 
+}
+
+function sendAvgBright(){
+  console.log(avgBright);
+  var data = {
+    avgBrightness: avgBright
+  }
+  socket.emit('bright', data);
 }
