@@ -5,6 +5,7 @@ var avgBright;
 var counter;
 var oldBright;
 var difference;
+var sessionid
 
 
 function setup() {
@@ -15,6 +16,9 @@ function setup() {
 
   video.hide();
   socket = io.connect();
+  socket.on('connect', function() {
+  sessionid = socket.socket.sessionid;
+});
 }
 
 function draw() {
@@ -46,10 +50,11 @@ function draw() {
 
 }
 
+
 function sendAvgBright(){
   console.log(avgBright);
   var data = {
     avgBrightness: avgBright
   }
-  socket.emit('bright', data);
+  socket.emit('bright', data, sessionid);
 }
