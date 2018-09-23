@@ -10,10 +10,9 @@ var socketID;
 var maxiAudio = new maximJs.maxiAudio();
 var myWave = new maximJs.maxiOsc();
 maxiAudio.init();
-var freq = 220;
 
 maxiAudio.play = function () {
-  this.output = myWave.sinewave(freq);
+  this.output = myWave.sinewave(avgBright);
 };
 
 function setup() {
@@ -54,7 +53,7 @@ function draw() {
   avgBright = avgBright / counter;
   difference = oldBright - avgBright;
 
-  if (Math.abs(difference) > 0.1) {
+  if (Math.abs(difference) > 0.2) {
     sendAvgBright();
   }
 

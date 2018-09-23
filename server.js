@@ -4,9 +4,9 @@ var path = require('path');
 var socketID;
 
 var app = express();
-var server = app.listen(process.env.PORT || 3000, process.env.IP, function(){
+var server = app.listen(process.env.PORT || 3000, process.env.IP, function () {
   console.log("My socket server is running");
-})
+});
 var io = socket(server);
 
 app.use(express.static(__dirname + '/public'));
@@ -18,6 +18,7 @@ function newConnection(socket) {
   socket.on('bright', cameraMsg);
 
 }
-function cameraMsg(data){
+
+function cameraMsg(data) {
   console.log(data);
 }
