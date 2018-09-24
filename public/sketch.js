@@ -8,13 +8,32 @@ var difference;
 var socketID;
 var counter = 0;
 var freq = 400;
+var vol = 0.5;
+
+//clock
+var clock1 = new maximJs.maxiClock();
+clock1.setTempo(120);
+
+
 
 var maxiAudio = new maximJs.maxiAudio();
 var myWave = new maximJs.maxiOsc();
+var myWave2 = new maximJs.maxiOsc();
+var myWave3 = new maximJs.maxiOsc();
+var myWave4 = new maximJs.maxiOsc();
+var myWave5 = new maximJs.maxiOsc();
 maxiAudio.init();
 
+
 maxiAudio.play = function () {
-  this.output = myWave.sinewave(freq) + myWave.sinewave(freq * 2) * 0.5;
+  clock1.ticker();
+  var synth = (myWave.sinewave(freq) + myWave2.sinewave(freq * 2) + myWave3.sawn(freq / 2) + myWave4.sawn(300 - freq));
+  if (clock1.tick) {
+    clock1.setTicksPerBeat(Math.random(1, 10));
+    vol = (Math.random() * 0.4);
+  }
+
+  this.output = synth * vol;
 };
 
 function setup() {
