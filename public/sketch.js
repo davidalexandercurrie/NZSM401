@@ -38,6 +38,7 @@ function draw() {
     video.loadPixels();
     oldBright = avgBright;
     avgBright = 0;
+    avgBright = 0;
     counter = 0;
     for (var y = 0; y < video.height; y++) {
       for (var x = 0; x < video.width; x++) {
