@@ -14,7 +14,7 @@ var myWave = new maximJs.maxiOsc();
 maxiAudio.init();
 
 maxiAudio.play = function () {
-  this.output = myWave.sinewave(freq) * 0.5;
+  this.output = myWave.sinewave(freq) + myWave.sinewave(freq * 2) * 0.5;
 };
 
 function setup() {
@@ -29,6 +29,7 @@ function setup() {
     socketID = socket.id;
     console.log(socket.id);
   });
+
 
 }
 
