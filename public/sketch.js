@@ -43,7 +43,7 @@ function setup() {
   video.size(width / vScale, height / vScale);
 
   video.hide();
-  socket = io.connect();
+  socket = io.connect('http://localhost:3000');
   socket.on('connect', function () {
     socketID = socket.id;
     console.log(socket.id);
