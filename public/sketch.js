@@ -43,13 +43,16 @@ function setup() {
   video.size(width / vScale, height / vScale);
 
   video.hide();
-  socket = io.connect('http://localhost:3000');
+  socket = io.connect();
+  socket.on('bright', dataReceive);
   socket.on('connect', function () {
     socketID = socket.id;
     console.log(socket.id);
   });
+}
 
-
+function dataReceive(data) {
+  console.log(data, "received");
 }
 
 function draw() {

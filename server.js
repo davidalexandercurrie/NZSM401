@@ -14,10 +14,9 @@ io.sockets.on('connection', newConnection);
 
 function newConnection(socket) {
   console.log('new connection: ' + socket.id);
-  socket.on('bright', cameraMsg);
-}
-
-function cameraMsg(data) {
-  socket.broadcast.emit('bright', data);
-  console.log(data);
+  socket.on('bright', (data) => {
+    // we tell the client to execute 'bright'
+    socket.broadcast.emit('bright', data);
+    console.log(data);
+  });
 }
