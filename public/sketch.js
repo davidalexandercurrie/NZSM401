@@ -9,7 +9,7 @@ var socketID;
 var counter = 0;
 var freq = 400;
 var vol = 0.5;
-var receiveVar;
+var receiveVar = 10;
 
 //clock
 var clock1 = new maximJs.maxiClock();
@@ -26,7 +26,7 @@ maxiAudio.init();
 
 maxiAudio.play = function () {
   clock1.ticker();
-  var synth = (myWave.sinewave(freq) + myWave2.sinewave(freq * 2) + myWave3.sawn(freq / 2) + myWave4.sawn(300 - freq));
+  var synth = myWave5.sawn(receiveVar / 10) * (myWave.sinewave(freq) + myWave2.sinewave(freq * 2) + myWave3.sawn(freq / 2) + myWave4.sawn(300 - freq));
   if (clock1.tick) {
     clock1.setTicksPerBeat(Math.random(1, 10));
     vol = (Math.random() * 0.4);
@@ -48,10 +48,6 @@ function setup() {
     socketID = socket.id;
     console.log(socket.id);
   });
-}
-
-function dataReceive(data) {
-  console.log(data, "received");
 }
 
 function draw() {
@@ -86,7 +82,11 @@ function draw() {
       updateFreq(avgBright);
     }
   }
+}
 
+function dataReceive(data) {
+  console.log(data, "received");
+  receiveVar = data.avgBrightness;
 }
 
 function sendData() {
