@@ -9,12 +9,11 @@ var socketID;
 var counter = 0;
 var freq = 400;
 var vol = 0.5;
+var receiveVar;
 
 //clock
 var clock1 = new maximJs.maxiClock();
 clock1.setTempo(120);
-
-
 
 var maxiAudio = new maximJs.maxiAudio();
 var myWave = new maximJs.maxiOsc();
@@ -22,8 +21,8 @@ var myWave2 = new maximJs.maxiOsc();
 var myWave3 = new maximJs.maxiOsc();
 var myWave4 = new maximJs.maxiOsc();
 var myWave5 = new maximJs.maxiOsc();
-maxiAudio.init();
 
+maxiAudio.init();
 
 maxiAudio.play = function () {
   clock1.ticker();
@@ -58,11 +57,12 @@ function dataReceive(data) {
 function draw() {
   counter++;
   if (counter % 5 == 0) {
+
     video.loadPixels();
     oldBright = avgBright;
     avgBright = 0;
-    avgBright = 0;
     counter = 0;
+
     for (var y = 0; y < video.height; y++) {
       for (var x = 0; x < video.width; x++) {
         var index = (x + y * video.width) * 4;
@@ -81,7 +81,7 @@ function draw() {
     difference = oldBright - avgBright;
 
     if (Math.abs(difference) > 0.2) {
-      sendAvgBright();
+      sendData();
       console.log(avgBright);
       updateFreq(avgBright);
     }
@@ -89,8 +89,7 @@ function draw() {
 
 }
 
-
-function sendAvgBright() {
+function sendData() {
   //console.log(avgBright);
   var data = {
     avgBrightness: avgBright,
