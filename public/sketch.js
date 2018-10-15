@@ -10,6 +10,11 @@ var counter = 0;
 var freq = 400;
 var vol = 0.5;
 var receiveVar = 10;
+var env = 0;
+var volM;
+var add;
+var lengthSwell = 10000;
+var counter1 = 0;
 
 //clock
 var clock1 = new maximJs.maxiClock();
@@ -25,11 +30,28 @@ var myWave5 = new maximJs.maxiOsc();
 maxiAudio.init();
 
 maxiAudio.play = function () {
+  if (env % lengthSwell === 0) {
+    add = 1;
+    lengthSwell = Math.random() * 1000 + 5000;
+    console.log(lengthSwell, "LENGTHSWELL");
+  }
+  if (env % lengthSwell === (lengthSwell - 1)) {
+    add = -1;
+    lengthSwell = Math.random() * 1000 + 5000;
+  }
+  if (counter1 % 100000 === 0) {
+    console.log(env, lengthSwell);
+  }
+  counter1++;
+
+
+  env = env + add;
+  volM = env / lengthSwell;
   clock1.ticker();
   var synth = myWave5.sawn(receiveVar / 10) * (myWave.sinewave(freq) + myWave2.sinewave(freq * 2) + myWave3.sawn(freq / 2) + myWave4.sawn(300 - freq));
   if (clock1.tick) {
     clock1.setTicksPerBeat(Math.random(1, 10));
-    vol = (Math.random() * 0.4);
+    vol = (Math.random() * 0.4) * volM;
   }
 
   this.output = synth * vol;
