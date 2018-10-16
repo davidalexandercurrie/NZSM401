@@ -7,7 +7,7 @@ var oldBright;
 var difference;
 var socketID;
 var counter = 0;
-var freq = 400;
+var freq = 20;
 var vol = 0.5;
 var receiveVar = 10;
 var env = 0;
@@ -15,10 +15,13 @@ var volM;
 var add;
 var lengthSwell = 10000;
 var counter1 = 0;
+var master = 1;
+var x = 1;
 
 //clock
 var clock1 = new maximJs.maxiClock();
-clock1.setTempo(120);
+clock1.setTempo(90);
+clock1.setTicksPerBeat(16);
 
 var maxiAudio = new maximJs.maxiAudio();
 var myWave = new maximJs.maxiOsc();
@@ -30,30 +33,27 @@ var myWave5 = new maximJs.maxiOsc();
 maxiAudio.init();
 
 maxiAudio.play = function () {
-  if (env % lengthSwell === 0) {
-    add = 1;
-    lengthSwell = Math.random() * 1000 + 5000;
-    console.log(lengthSwell, "LENGTHSWELL");
-  }
-  if (env % lengthSwell === (lengthSwell - 1)) {
-    add = -1;
-    lengthSwell = Math.random() * 1000 + 5000;
-  }
-  if (counter1 % 100000 === 0) {
-    console.log(env, lengthSwell);
-  }
+
   counter1++;
 
 
-  env = env + add;
-  volM = env / lengthSwell;
+
   clock1.ticker();
-  var synth = myWave5.sawn(receiveVar / 10) * (myWave.sinewave(freq) + myWave2.sinewave(freq * 2) + myWave3.sawn(freq / 2) + myWave4.sawn(300 - freq));
+  var synth = myWave5.square(receiveVar / 100) * (myWave.sawn(freq) + myWave2.sawn(freq * 2) + myWave3.sawn(freq / 2) + myWave4.sinewave(500 - freq)) / 10;
 
-  vol = (Math.random() * 0.4) * volM / 2;
+  var beat = Math.floor((Math.random() * 15) + 1);
+  var tempoSetter = Math.floor((Math.random() * 100) + 60);
+  if (clock1.tick) {
 
+    if (counter % beat === 0) {
+      master = 1;
+      clock1.setTempo(tempoSetter);
+    } else {
+      master = 0;
+    }
+  }
 
-  this.output = synth * vol * 0.01;
+  this.output = synth * 0.05 * master;
 };
 
 function setup() {
@@ -67,7 +67,7 @@ function setup() {
   socket.on('bright', dataReceive);
   socket.on('connect', function () {
     socketID = socket.id;
-    console.log(socket.id);
+
   });
 }
 
@@ -99,15 +99,17 @@ function draw() {
 
     if (Math.abs(difference) > 0.2) {
       sendData();
-      console.log(avgBright);
+
       updateFreq(avgBright);
     }
   }
 }
 
 function dataReceive(data) {
-  console.log(data, "received");
+
   receiveVar = (data.avgBrightness / 2);
+  clock1.setTempo(receiveVar * 4);
+
 }
 
 function sendData() {
@@ -120,5 +122,10 @@ function sendData() {
 }
 
 function updateFreq(frequency) {
-  freq = frequency;
+  if (freq > frequency) {
+    freq -= 0.1;
+  } else {
+    freq += 1;
+  }
+  console.log(freq, "FREQ");
 }
