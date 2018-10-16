@@ -49,10 +49,9 @@ maxiAudio.play = function () {
   volM = env / lengthSwell;
   clock1.ticker();
   var synth = myWave5.sawn(receiveVar / 10) * (myWave.sinewave(freq) + myWave2.sinewave(freq * 2) + myWave3.sawn(freq / 2) + myWave4.sawn(300 - freq));
-  if (clock1.tick) {
-    clock1.setTicksPerBeat(Math.random(1, 10));
-    vol = (Math.random() * 0.4) * volM;
-  }
+
+  vol = (Math.random() * 0.4) * volM;
+
 
   this.output = synth * vol * 0.3;
 };
