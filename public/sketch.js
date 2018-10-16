@@ -53,7 +53,7 @@ maxiAudio.play = function () {
   vol = (Math.random() * 0.4) * volM / 2;
 
 
-  this.output = synth * vol * 0.1;
+  this.output = synth * vol * 0.01;
 };
 
 function setup() {
