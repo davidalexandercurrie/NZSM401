@@ -39,7 +39,7 @@ maxiAudio.play = function () {
 
 
   clock1.ticker();
-  var synth = myWave5.square(receiveVar / 100) * (myWave.sawn(freq) + myWave2.sawn(60) + myWave3.sawn(freq / 2) + (myWave4.sinewave(30) * 0.2));
+  var synth = myWave3.sinewave(freq * 400) * 0.5;
 
   var beat = Math.floor((Math.random() * 15) + 1);
   var tempoSetter = Math.floor((Math.random() * 100) + 60);
@@ -48,6 +48,10 @@ maxiAudio.play = function () {
     if (counter % beat === 0) {
       master = 1;
       clock1.setTempo(tempoSetter);
+      synth = myWave5.square(receiveVar / 100) * ((myWave.sawn(freq / 2) + myWave2.sawn(60) + (myWave3.sinewave(freq * 200) * 0.3) + (myWave4.sinewave(30) * 0.2)));
+    } else if (counter % beat === 4) {
+      master = 1;
+      synth = myWave3.sinewave(10);
     } else {
       master = 0;
     }
@@ -97,7 +101,7 @@ function draw() {
     avgBright = avgBright / counter;
     difference = oldBright - avgBright;
 
-    if (Math.abs(difference) > 0.2) {
+    if (Math.abs(difference) > 0.1) {
       sendData();
 
       updateFreq(avgBright);
@@ -122,10 +126,10 @@ function sendData() {
 }
 
 function updateFreq(frequency) {
-  if (freq > frequency) {
-    freq -= 0.1;
+  if (freq > (frequency + 20)) {
+    freq -= 0.001;
   } else {
-    freq += 1;
+    freq += 0.001;
   }
   console.log(freq, "FREQ");
 }
