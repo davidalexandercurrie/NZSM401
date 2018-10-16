@@ -50,10 +50,10 @@ maxiAudio.play = function () {
   clock1.ticker();
   var synth = myWave5.sawn(receiveVar / 10) * (myWave.sinewave(freq) + myWave2.sinewave(freq * 2) + myWave3.sawn(freq / 2) + myWave4.sawn(300 - freq));
 
-  vol = (Math.random() * 0.4) * volM;
+  vol = (Math.random() * 0.4) * volM / 2;
 
 
-  this.output = synth * vol * 0.3;
+  this.output = synth * vol * 0.1;
 };
 
 function setup() {
