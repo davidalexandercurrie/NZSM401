@@ -107,7 +107,7 @@ function draw() {
 
 function dataReceive(data) {
   console.log(data, "received");
-  receiveVar = data.avgBrightness;
+  receiveVar = (data.avgBrightness / 2);
 }
 
 function sendData() {
