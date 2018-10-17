@@ -39,7 +39,7 @@ maxiAudio.play = function () {
 
 
   clock1.ticker();
-  var synth = myWave3.sinewave(freq * 400) * 0.5;
+  var synth = myWave3.sinewave(freq * 400) * 0.2;
 
   var beat = Math.floor((Math.random() * 15) + 1);
   var tempoSetter = Math.floor((Math.random() * 100) + 60);
