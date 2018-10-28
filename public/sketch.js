@@ -64,9 +64,9 @@ maxiAudio.play = function () {
 };
 
 function setup() {
-  createCanvas(640 * 1.6, 480 * 1.6);
+  createCanvas(640 * 1.5, 480 * 1.5);
   brightnessThreshold = createSlider(0, 200, 100, 1);
-  brightnessThreshold.position(20, 460);
+  brightnessThreshold.position(20, 720);
 
 
   pixelDensity(1);
@@ -104,7 +104,7 @@ function draw() {
         if (bright > brightnessThreshold.value()) {
           fill(128, 135, 130, 50);
         } else {
-          fill(179, 255, 179, 50);
+          fill(179, 255, 179, 100);
         }
         stroke(255);
         rect(width - (x + 1) * vScale, y * vScale, vScale, vScale);
