@@ -1,6 +1,6 @@
 var video;
 var socket;
-var vScale = 16;
+var vScale = 64;
 var avgBright;
 var counter;
 var oldBright;
@@ -17,10 +17,13 @@ var lengthSwell = 10000;
 var counter1 = 0;
 var master = 1;
 var x = 1;
+var oldvideo;
+var brightnessThreshold;
+
 
 //clock
 var clock1 = new maximJs.maxiClock();
-clock1.setTempo(90);
+clock1.setTempo(30);
 clock1.setTicksPerBeat(16);
 
 var maxiAudio = new maximJs.maxiAudio();
@@ -61,12 +64,17 @@ maxiAudio.play = function () {
 };
 
 function setup() {
-  createCanvas(640, 480);
+  createCanvas(640 * 1.6, 480 * 1.6);
+  brightnessThreshold = createSlider(0, 200, 100, 1);
+  brightnessThreshold.position(20, 460);
+
+
   pixelDensity(1);
   video = createCapture(VIDEO);
   video.size(width / vScale, height / vScale);
 
-  // video.hide();
+
+  video.hide();
   socket = io.connect();
   socket.on('bright', dataReceive);
   socket.on('connect', function () {
@@ -93,13 +101,22 @@ function draw() {
 
         var bright = (r + g + b) / 3;
         avgBright = avgBright + bright;
-        fill(bright);
+        if (bright > brightnessThreshold.value()) {
+          fill(128, 135, 130, 50);
+        } else {
+          fill(179, 255, 179, 50);
+        }
+        stroke(255);
         rect(width - (x + 1) * vScale, y * vScale, vScale, vScale);
+
+
         counter++;
       }
     }
     avgBright = avgBright / counter;
     difference = oldBright - avgBright;
+
+
 
     if (Math.abs(difference) > 0.1) {
       sendData();
@@ -107,12 +124,17 @@ function draw() {
       updateFreq(avgBright);
     }
   }
+  // for (var i = 0; i < video.pixels.length / 4; i++) {
+  //   console.log(i);
+  // }
+  oldvideo = video.pixels.slice(0);
+
 }
 
 function dataReceive(data) {
 
   receiveVar = (data.avgBrightness / 2);
-  clock1.setTempo(receiveVar * 4);
+  clock1.setTempo(receiveVar / 2);
 
 }
 
@@ -131,5 +153,5 @@ function updateFreq(frequency) {
   } else {
     freq += 0.001;
   }
-  console.log(freq, "FREQ");
+  // console.log(freq, "FREQ");
 }
