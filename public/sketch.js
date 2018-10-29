@@ -155,7 +155,7 @@
     }
 
     fill(colours[data.Socket_ID + "r"], colours[data.Socket_ID + "g"], colours[data.Socket_ID + "b"], 200);
-    ellipse((width - data.xSquares) * Math.random(), (width - data.ySquares) * Math.random(), 50 / userIdSet.size, 50 / userIdSet.size);
+    ellipse(data.xSquares, data.ySquares, 50 / userIdSet.size, 50 / userIdSet.size);
 
   }
 
