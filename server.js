@@ -10,8 +10,8 @@ app.use(express.static(__dirname + '/public'));
 
 io.sockets.on('connection', (socket) => {
   console.log('new connection: ' + socket.id);
-  socket.on('bright', data => {
-    socket.broadcast.emit('bright', data);
+  socket.on('squaresXY', data => {
+    socket.broadcast.emit('squaresXY', data);
     console.log(data);
   });
 });

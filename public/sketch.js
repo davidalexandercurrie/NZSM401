@@ -9,7 +9,6 @@
   var counter = 0;
   var freq = 20;
 
-  var receiveVar = 10;
   var env = 0;
 
   var add;
@@ -26,6 +25,9 @@
   var chance;
   var osc;
   var osc2;
+  var userIdSet = new Set();
+  var colours = {};
+
 
 
 
@@ -42,7 +44,7 @@
 
     video.hide();
     socket = io.connect();
-    socket.on('bright', dataReceive);
+    socket.on('squaresXY', dataReceive);
     socket.on('connect', function () {
       socketID = socket.id;
     });
@@ -55,9 +57,10 @@
   }
 
   function draw() {
+
     counter1++;
     if (counter1 == squares) {
-      console.log(counter1);
+      // console.log(counter1);
       counter1 = 0;
 
     }
@@ -90,6 +93,7 @@
       oldBright = avgBright;
       avgBright = 0;
       if (counter1 % 2 == 0) {
+        background(255, 1);
         for (var y = 0; y < video.height; y++) {
           for (var x = 0; x < video.width; x++) {
             var index = (x + y * video.width) * 4;
@@ -121,48 +125,45 @@
           }
         }
       }
+      fill(255, 175, 217, 200);
       ellipse(xSquares, ySquares, squares * 2, squares * 2);
-      console.log(xSquares, "x");
-      console.log(ySquares, "y");
+
+      // console.log(xSquares, "x");
+      // console.log(ySquares, "y");
       finalSquares = squares;
       // console.log(finalSquares);
-      avgBright = avgBright / counter;
-      difference = oldBright - avgBright;
-
-
-
-      if (Math.abs(difference) > 0.1) {
-        sendData();
-        updateFreq(avgBright);
-      }
     }
-    // for (var i = 0; i < video.pixels.length / 4; i++) {
-    //   console.log(i);
-    // }
-    oldvideo = video.pixels.slice(0);
-
+    if (counter1 % 60 == 0) {
+      sendData();
+      console.log(userIdSet);
+    }
   }
 
   function dataReceive(data) {
-    receiveVar = (data.avgBrightness / 2);
-    clock1.setTempo(receiveVar / 2);
+    console.log(data.xSquares);
+    console.log(data.ySquares);
+    console.log(data.Socket_ID);
+    if (!userIdSet.has(data.Socket_ID)) {
+      userIdSet.add(data.Socket_ID);
+      //create random colour
+      //assign to an object as value for user id key
+      colours[data.Socket_ID + "r"] = Math.random() * 46;
+      colours[data.Socket_ID + "g"] = Math.random() * 255;
+      colours[data.Socket_ID + "b"] = Math.random() * 137;
+      // (23,126,137)
+
+    }
+
+    fill(colours[data.Socket_ID + "r"], colours[data.Socket_ID + "g"], colours[data.Socket_ID + "b"], 200);
+    ellipse((width - data.xSquares) * Math.random(), (width - data.ySquares) * Math.random(), 50 / userIdSet.size, 50 / userIdSet.size);
 
   }
 
   function sendData() {
-    //console.log(avgBright);
     var data = {
-      avgBrightness: avgBright,
+      xSquares: xSquares,
+      ySquares: ySquares,
       Socket_ID: socketID
     };
-    socket.emit('bright', data);
-  }
-
-  function updateFreq(frequency) {
-    if (freq > (frequency + 20)) {
-      freq -= 0.001;
-    } else {
-      freq += 0.001;
-    }
-    // console.log(freq, "FREQ");
+    socket.emit('squaresXY', data);
   }
