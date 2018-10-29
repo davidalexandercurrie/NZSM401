@@ -19,12 +19,23 @@ var master = 1;
 var x = 1;
 var oldvideo;
 var brightnessThreshold;
+var squares;
+var finalSquares;
+var synth = 0;
+var synth2 = 0;
+var chance;
 
 
 //clock
 var clock1 = new maximJs.maxiClock();
-clock1.setTempo(30);
-clock1.setTicksPerBeat(16);
+var clock2 = new maximJs.maxiClock();
+var clock3 = new maximJs.maxiClock();
+clock1.setTempo(1000);
+clock1.setTicksPerBeat(4);
+clock2.setTempo(1200);
+clock2.setTicksPerBeat(9);
+clock3.setTempo(120);
+clock3.setTicksPerBeat(1);
 
 var maxiAudio = new maximJs.maxiAudio();
 var myWave = new maximJs.maxiOsc();
@@ -32,39 +43,65 @@ var myWave2 = new maximJs.maxiOsc();
 var myWave3 = new maximJs.maxiOsc();
 var myWave4 = new maximJs.maxiOsc();
 var myWave5 = new maximJs.maxiOsc();
+var timer = new maximJs.maxiOsc();
+var myFilter = new maximJs.maxiFilter();
 
 maxiAudio.init();
 
 maxiAudio.play = function () {
-
-  counter1++;
-
-
-
   clock1.ticker();
-  var synth = myWave3.sinewave(freq * 400) * 0.2;
+  clock2.ticker();
+  clock3.ticker();
 
-  var beat = Math.floor((Math.random() * 15) + 1);
-  var tempoSetter = Math.floor((Math.random() * 100) + 60);
-  if (clock1.tick) {
 
-    if (counter % beat === 0) {
-      master = 1;
-      clock1.setTempo(tempoSetter);
-      synth = myWave5.square(receiveVar / 100) * ((myWave.sawn(freq / 2) + myWave2.sawn(60) + (myWave3.sinewave(freq * 200) * 0.3) + (myWave4.sinewave(30) * 0.2)));
-    } else if (counter % beat === 4) {
-      master = 1;
-      synth = myWave3.sinewave(10);
-    } else {
-      master = 0;
-    }
+
+  if (chance < 0.001) {
+    clock1.setTempo(1);
+    clock2.setTempo(1);
+  } else {
+    clock1.setTempo(1000);
+    clock2.setTempo(1000);
   }
 
-  this.output = synth * 0.05 * master;
+  if (clock1.tick || counter1 % 10 == 0) {
+    chance = Math.random();
+    counter1 = timer.phasor(8);
+    synth = myWave3.sawn(30);
+    synth2 = (myWave.sinewave(60) + myWave2.sinewave(58)) * 0.1;
+    clock1.setTicksPerBeat(8);
+    clock1.setTempo(2000);
+    clock2.setTempo(2000);
+  } else {
+    synth = myWave3.sinewave(30) * 0.01;
+    synth2 = 0;
+    clock1.setTempo(20);
+    clock2.setTempo(300);
+  }
+  if (counter1 % 4 == 1 || counter1 % 8 == 3 || counter1 % 7 == 2) {
+    synth = myWave3.sinewave(squares * (Math.random() + 1) * myWave4.sawn(Math.random() * 100)) * 0.5;
+    clock1.setTempo(Math.random() * 5000);
+    clock2.setTempo(200);
+  } else if (counter1 % 8 == 4 || counter1 % 16 == 2 || squares % 10 == 0 || squares % 5 == 2) {
+    synth2 = (myWave.sawn(squares * 2) + myWave2.sawn(squares * 3) + myWave.sawn(squares / 2)) * 0.025;
+    clock1.setTempo(Math.random() * 1000);
+    clock2.setTempo(Math.random() * 1000);
+  } else {
+    synth = (myWave3.sinewave(720 * 2) + (myWave3.sinewave(720 * 8) * 0.5)) * 0.01;
+    synth2 = (myWave.sawn(59 * 128) + myWave2.sawn(179 * 128)) * 0.025;
+    clock1.setTempo(Math.random() * 1000);
+    clock2.setTempo(Math.random() * 1000);
+  }
+  if (clock2.tick) {
+    synth = myWave.sawn(counter1 * 10);
+    clock1.setTempo(Math.random() * 10);
+    clock2.setTempo(Math.random() * 10);
+  }
+
+  this.output = synth + synth2;
 };
 
 function setup() {
-  createCanvas(640 * 1.5, 480 * 1.5);
+  createCanvas(1370, 480 * 1.5);
   brightnessThreshold = createSlider(0, 200, 100, 1);
   brightnessThreshold.position(20, 720);
 
@@ -85,6 +122,7 @@ function setup() {
 
 function draw() {
   counter++;
+  squares = 0;
   if (counter % 5 == 0) {
 
     video.loadPixels();
@@ -105,6 +143,7 @@ function draw() {
           fill(128, 135, 130, 50);
         } else {
           fill(179, 255, 179, 100);
+          squares++;
         }
         stroke(255);
         rect(width - (x + 1) * vScale, y * vScale, vScale, vScale);
@@ -113,6 +152,8 @@ function draw() {
         counter++;
       }
     }
+    finalSquares = squares;
+    // console.log(finalSquares);
     avgBright = avgBright / counter;
     difference = oldBright - avgBright;
 
