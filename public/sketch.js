@@ -120,6 +120,10 @@
             fill(255, 175, 217, 200);
             finalSquares = squares;
             ellipse((xSquares / finalSquares) * vScale, (ySquares / finalSquares) * vScale, squares, squares);
+            if (counter1 % 60 == 0) {
+              sendData();
+              console.log(userIdSet);
+            }
           }
         }
 
@@ -133,10 +137,7 @@
       finalSquares = squares;
       // console.log(finalSquares);
     }
-    if (counter1 % 60 == 0) {
-      sendData();
-      console.log(userIdSet);
-    }
+
   }
 
   function dataReceive(data) {
@@ -161,8 +162,8 @@
 
   function sendData() {
     var data = {
-      xSquares: xSquares,
-      ySquares: ySquares,
+      xSquares: ((xSquares / finalSquares) * vScale),
+      ySquares: ((ySquares / finalSquares) * vScale),
       Socket_ID: socketID
     };
     socket.emit('squaresXY', data);
