@@ -64,9 +64,7 @@
       counter1 = 0;
 
     }
-    squares = 0;
-    xSquares = width / 2;
-    ySquares = height / 2;
+
 
     osc.setType('sine');
     osc.freq(45, 0.1);
@@ -93,6 +91,9 @@
       oldBright = avgBright;
       avgBright = 0;
       if (counter1 % 2 == 0) {
+        squares = 0;
+        xSquares = 0;
+        ySquares = 0;
         background(255, 1);
         for (var y = 0; y < video.height; y++) {
           for (var x = 0; x < video.width; x++) {
@@ -104,29 +105,28 @@
             avgBright = avgBright + bright;
             if (bright > brightnessThreshold.value()) {
               fill(128, 135, 130, 50);
+              xSquares = xSquares + x;
+              ySquares = ySquares + y;
+              squares++;
+
             } else {
               fill(179, 255, 179, 100);
-              if (x < 10.5) {
-                xSquares = xSquares + 10;
-              } else {
-                xSquares = xSquares - 10;
-              }
-              if (y > 5.5) {
-                ySquares = ySquares + 10;
-              } else {
-                ySquares = ySquares - 20;
-              }
-
-              squares++;
             }
             stroke(255);
             rect(width - (x + 1) * vScale, y * vScale, vScale, vScale);
             counter++;
           }
+          if (y == video.height - 1) {
+            fill(255, 175, 217, 200);
+            finalSquares = squares;
+            ellipse((xSquares / finalSquares) * vScale, (ySquares / finalSquares) * vScale, squares, squares);
+          }
         }
+
       }
-      fill(255, 175, 217, 200);
-      ellipse(xSquares, ySquares, squares * 2, squares * 2);
+
+      console.log("x,y", xSquares, ySquares);
+
 
       // console.log(xSquares, "x");
       // console.log(ySquares, "y");
@@ -150,7 +150,7 @@
       colours[data.Socket_ID + "r"] = Math.random() * 46;
       colours[data.Socket_ID + "g"] = Math.random() * 255;
       colours[data.Socket_ID + "b"] = Math.random() * 137;
-      // (23,126,137)
+
 
     }
 
