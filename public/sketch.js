@@ -131,7 +131,7 @@
             console.log(squares, xSquares, ySquares);
             xAverage = (xSquares / finalSquares) * vScale;
             yAverage = (ySquares / finalSquares) * vScale;
-            ellipse(xAverage, yAverage, squares + 20, squares + 20);
+            ellipse(width - xAverage, yAverage, squares + 20, squares + 20);
             if (counter1 % 60 == 0) {
               sendData();
               // console.log(userIdSet);
