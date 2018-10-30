@@ -27,6 +27,8 @@
   var osc2;
   var userIdSet = new Set();
   var colours = {};
+  var xAverage;
+  var yAverage;
 
 
 
@@ -108,12 +110,16 @@
             avgBright = avgBright + bright;
             if (bright > brightnessThreshold.value()) {
               fill(128, 135, 130, 50);
-              xSquares = xSquares + x;
-              ySquares = ySquares + y;
-              squares++;
+
+
+
+
 
             } else {
               fill(179, 255, 179, 100);
+              xSquares = xSquares + x;
+              ySquares = ySquares + y;
+              squares++;
             }
             stroke(255);
             rect(width - (x + 1) * vScale, y * vScale, vScale, vScale);
@@ -122,7 +128,10 @@
           if (y == video.height - 1) {
             fill(255, 175, 217, 200);
             finalSquares = squares;
-            ellipse((xSquares / finalSquares) * vScale, (ySquares / finalSquares) * vScale, squares, squares);
+            console.log(squares, xSquares, ySquares);
+            xAverage = xSquares / finalSquares * vScale;
+            yAverage = ySquares / finalSquares * vScale;
+            ellipse(xAverage, yAverage, squares + 20, squares + 20);
             if (counter1 % 60 == 0) {
               sendData();
               // console.log(userIdSet);
@@ -137,7 +146,7 @@
 
       // console.log(xSquares, "x");
       // console.log(ySquares, "y");
-      finalSquares = squares;
+
       // console.log(finalSquares);
     }
 
@@ -151,22 +160,19 @@
       userIdSet.add(data.Socket_ID);
       //create random colour
       //assign to an object as value for user id key
-      colours[data.Socket_ID + "r"] = Math.random() * 46;
-      colours[data.Socket_ID + "g"] = Math.random() * 255;
-      colours[data.Socket_ID + "b"] = Math.random() * 137;
-
-
+      var randC = Math.random();
+      colours[data.Socket_ID + "r"] = randC * 46;
+      colours[data.Socket_ID + "g"] = randC * 255;
+      colours[data.Socket_ID + "b"] = randC * 137;
     }
-
     fill(colours[data.Socket_ID + "r"], colours[data.Socket_ID + "g"], colours[data.Socket_ID + "b"], 200);
     ellipse(data.xSquares, data.ySquares, 30 + (50 / userIdSet.size), 30 + (50 / userIdSet.size));
-
   }
 
   function sendData() {
     var data = {
-      xSquares: ((xSquares / finalSquares) * vScale),
-      ySquares: ((ySquares / finalSquares) * vScale),
+      xSquares: xAverage,
+      ySquares: yAverage,
       Socket_ID: socketID
     };
     socket.emit('squaresXY', data);
