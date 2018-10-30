@@ -127,12 +127,12 @@
             // console.log(squares, xSquares, ySquares);
             xAverage = width - ((xSquares / (finalSquares + 0.001)) * vScale) + 32;
             yAverage = ((ySquares / (finalSquares + 0.001)) * vScale);
-            ellipse(width - xAverage, yAverage, squares + 20, squares + 20);
+            ellipse(xAverage, yAverage, squares + 20, squares + 20);
             panning = map(xAverage, 1, width, -1, 1);
             // console.log(panning);
             osc.pan(panning * 1.5, 0.5);
 
-            if (counter1 % 60 == 0) {
+            if (counter1 % 30 == 0) {
               sendData();
               // console.log(userIdSet);
             }
@@ -160,17 +160,19 @@
       userIdSet.add(data.Socket_ID);
       //create random colour
       //assign to an object as value for user id key
-      var randC = Math.random();
-      colours[data.Socket_ID + "r"] = randC * 46;
-      colours[data.Socket_ID + "g"] = randC * 255;
-      colours[data.Socket_ID + "b"] = randC * 137;
+      var randC = random(0.6, 1.4);
+      colours[data.Socket_ID + "r"] = randC * 156;
+      colours[data.Socket_ID + "g"] = randC * 146;
+      colours[data.Socket_ID + "b"] = randC * 163;
+      //(156,146,163)
     }
     fill(colours[data.Socket_ID + "r"], colours[data.Socket_ID + "g"], colours[data.Socket_ID + "b"], 200);
-    ellipse(data.xSquares, data.ySquares, 30 + (50 / userIdSet.size), 30 + (50 / userIdSet.size));
+    ellipse(data.xSquares, data.ySquares, data.squares + 20, data.squares + 20);
   }
 
   function sendData() {
     var data = {
+      squares: squares,
       xSquares: xAverage,
       ySquares: yAverage,
       Socket_ID: socketID
