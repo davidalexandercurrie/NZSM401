@@ -42,7 +42,7 @@
     video = createCapture(VIDEO);
     video.size(width / vScale, height / vScale);
 
-    video.hide();
+    // video.hide();
     socket = io.connect();
     socket.on('squaresXY', dataReceive);
     socket.on('connect', function () {
