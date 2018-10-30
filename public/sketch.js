@@ -57,7 +57,7 @@
   }
 
   function draw() {
-    if (counter1 % 300 == 0) {
+    if (counter1 % 18000 == 0) {
       userIdSet.clear();
     }
 
