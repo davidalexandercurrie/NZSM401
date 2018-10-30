@@ -122,14 +122,14 @@
             ellipse((xSquares / finalSquares) * vScale, (ySquares / finalSquares) * vScale, squares, squares);
             if (counter1 % 60 == 0) {
               sendData();
-              console.log(userIdSet);
+              // console.log(userIdSet);
             }
           }
         }
 
       }
 
-      console.log("x,y", xSquares, ySquares);
+      // console.log("x,y", xSquares, ySquares);
 
 
       // console.log(xSquares, "x");
@@ -156,7 +156,7 @@
     }
 
     fill(colours[data.Socket_ID + "r"], colours[data.Socket_ID + "g"], colours[data.Socket_ID + "b"], 200);
-    ellipse(data.xSquares, data.ySquares, 50 / userIdSet.size, 50 / userIdSet.size);
+    ellipse(data.xSquares, data.ySquares, 30 + (50 / userIdSet.size), 30 + (50 / userIdSet.size));
 
   }
 
