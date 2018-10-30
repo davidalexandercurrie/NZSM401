@@ -57,6 +57,9 @@
   }
 
   function draw() {
+    if (counter1 % 300 == 0) {
+      userIdSet.clear();
+    }
 
     counter1++;
     if (counter1 == squares) {
