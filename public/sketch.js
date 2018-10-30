@@ -29,6 +29,7 @@
   var colours = {};
   var xAverage;
   var yAverage;
+  var panning;
 
 
 
@@ -36,15 +37,15 @@
 
 
   function setup() {
-    createCanvas(1370, 720);
-    brightnessThreshold = createSlider(0, 200, 100, 1);
+    createCanvas(1360, 780);
+    brightnessThreshold = createSlider(1, 200, 100, 1);
     brightnessThreshold.position(20, 720);
 
     pixelDensity(1);
     video = createCapture(VIDEO);
     video.size(width / vScale, height / vScale);
 
-    // video.hide();
+    video.hide();
     socket = io.connect();
     socket.on('squaresXY', dataReceive);
     socket.on('connect', function () {
@@ -78,11 +79,11 @@
     osc2.amp(0.2, 0.01);
 
     if (counter1 % 10 == 0) {
-      osc.pan((Math.random() * 2) - 1);
+      // osc.pan((Math.random() * 2) - 1);
       osc.amp(0, 0.01);
 
     } else {
-      osc.amp(0.5, 0.001);
+      osc.amp(0.4, 0.001);
     }
     if (counter1 % 7 == 0) {
       osc2.pan((Math.random() * 2) - 1);
@@ -99,7 +100,7 @@
         squares = 0;
         xSquares = 0;
         ySquares = 0;
-        background(255, 1);
+        // background(255, 1);
         for (var y = 0; y < video.height; y++) {
           for (var x = 0; x < video.width; x++) {
             var index = (x + y * video.width) * 4;
@@ -109,14 +110,9 @@
             var bright = (r + g + b) / 3;
             avgBright = avgBright + bright;
             if (bright > brightnessThreshold.value()) {
-              fill(128, 135, 130, 50);
-
-
-
-
-
+              fill(214, 211, 240, 50);
             } else {
-              fill(179, 255, 179, 100);
+              fill(11, 49, 66, 50);
               xSquares = xSquares + x;
               ySquares = ySquares + y;
               squares++;
@@ -126,12 +122,16 @@
             counter++;
           }
           if (y == video.height - 1) {
-            fill(255, 175, 217, 200);
+            fill(15, 82, 87, 150);
             finalSquares = squares;
-            console.log(squares, xSquares, ySquares);
-            xAverage = (xSquares / finalSquares) * vScale;
-            yAverage = (ySquares / finalSquares) * vScale;
+            // console.log(squares, xSquares, ySquares);
+            xAverage = width - ((xSquares / (finalSquares + 0.001)) * vScale) + 32;
+            yAverage = ((ySquares / (finalSquares + 0.001)) * vScale);
             ellipse(width - xAverage, yAverage, squares + 20, squares + 20);
+            panning = map(xAverage, 1, width, -1, 1);
+            // console.log(panning);
+            osc.pan(panning * 1.5, 0.5);
+
             if (counter1 % 60 == 0) {
               sendData();
               // console.log(userIdSet);
@@ -153,9 +153,9 @@
   }
 
   function dataReceive(data) {
-    console.log(data.xSquares);
-    console.log(data.ySquares);
-    console.log(data.Socket_ID);
+    // console.log(data.xSquares);
+    // console.log(data.ySquares);
+    // console.log(data.Socket_ID);
     if (!userIdSet.has(data.Socket_ID)) {
       userIdSet.add(data.Socket_ID);
       //create random colour
