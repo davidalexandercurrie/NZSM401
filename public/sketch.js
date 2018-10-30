@@ -125,8 +125,8 @@
             fill(15, 82, 87, 150);
             finalSquares = squares;
             // console.log(squares, xSquares, ySquares);
-            xAverage = width - ((xSquares / (finalSquares + 0.001)) * vScale) + 32;
-            yAverage = ((ySquares / (finalSquares + 0.001)) * vScale);
+            xAverage = width - ((xSquares / (finalSquares + 0.001)) * vScale) - 32;
+            yAverage = ((ySquares / (finalSquares + 0.001)) * vScale) + 32;
             ellipse(xAverage, yAverage, squares + 20, squares + 20);
             panning = map(xAverage, 1, width, -1, 1);
             // console.log(panning);
