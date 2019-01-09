@@ -8,7 +8,7 @@ https://nzsm401.herokuapp.com/
 
 Project can also be run locally by downloading this repository and running it with node
 
-e.g. from within the main directory run this command from terminal
+i.e. from within the main directory run this command from terminal
 
 node server.js
 
