@@ -1,10 +1,10 @@
 David Currie
-NZSM401
+NZSM401 Project
 
 A shared browser-based audio-visual installation
 
 Project viewable online at
-https://nzsm401.herokuapp.com/
+https://socket-av.herokuapp.com/
 
 Project can also be run locally by downloading this repository and running it with node
 
